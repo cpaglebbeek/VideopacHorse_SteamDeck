@@ -1,0 +1,25 @@
+# Flatpak-manifest VideopacHorse_SteamDeck (placeholder v0.0.1-Baer)
+# Deploy-route: Meta_Master /Deploy2SteamDeck (zelfde flow als SteamDeckMSX).
+app-id: nl.icthorse.VideopacHorse
+runtime: org.freedesktop.Platform
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+command: videopachorse
+finish-args:
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --socket=pulseaudio
+  - --device=all          # gamecontrollers
+  - --filesystem=home:ro  # BIOS/ROMs van de gebruiker lezen
+modules:
+  - name: videopachorse
+    buildsystem: simple
+    build-commands:
+      - make CORE=./core
+      - install -Dm755 videopachorse /app/bin/videopachorse
+    sources:
+      - type: dir
+        path: ..
+      - type: dir
+        path: ../../VideopacHorse_Core
+        dest: core
